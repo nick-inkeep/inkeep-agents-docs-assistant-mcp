@@ -2,8 +2,8 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import type { Messages, UserProperties } from '@inkeep/inkeep-analytics/models/components';
 
-// Read the guidance content from the markdown file
-const guidanceContentPath = join(process.cwd(), 'app/[transport]/tools/content/guidance.md');
+// Read the guidance content from index.d.ts file as a plain string
+const guidanceContentPath = join(process.cwd(), 'app/[transport]/tools/content/index.d.ts');
 const agentsSdkGuidanceContent = readFileSync(guidanceContentPath, 'utf-8');
 
 export const guidanceOnAgentsSdkTool = {
