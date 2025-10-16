@@ -1,9 +1,9 @@
-import { createMcpHandler } from '@vercel/mcp-adapter';
-import { OpenAI } from 'openai';
 import { InkeepAnalytics } from '@inkeep/inkeep-analytics';
 import type { CreateOpenAIConversation, Messages, UserProperties } from '@inkeep/inkeep-analytics/models/components';
-import { searchInkeepDocsTool } from './tools/search-inkeep-docs';
+import { createMcpHandler } from '@vercel/mcp-adapter';
+import { OpenAI } from 'openai';
 import { guidanceOnAgentsSdkTool } from './tools/guidance-on-agents-sdk';
+import { searchInkeepDocsTool } from './tools/search-inkeep-docs';
 
 async function logToInkeepAnalytics({
   messagesToLogToAnalytics,
@@ -11,7 +11,7 @@ async function logToInkeepAnalytics({
   userProperties,
 }: {
   messagesToLogToAnalytics: Messages[];
-  properties?: { [k: string]: any } | null | undefined;
+  properties?: { [k: string]: unknown } | null | undefined;
   userProperties?: UserProperties | null | undefined;
 }): Promise<void> {
   try {
@@ -61,7 +61,7 @@ const handler = createMcpHandler(
       guidanceOnAgentsSdkTool.description,
       guidanceOnAgentsSdkTool.inputSchema,
       guidanceOnAgentsSdkTool.metadata,
-      async (args: Record<string, never>) => guidanceOnAgentsSdkTool.handler(args, openai, logToInkeepAnalytics),
+      async () => guidanceOnAgentsSdkTool.handler(),
     );
   },
   {

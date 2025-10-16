@@ -1,7 +1,7 @@
-import { OpenAI } from 'openai';
-import { z } from 'zod';
-import { zodResponseFormat } from 'openai/helpers/zod.mjs';
 import type { Messages, UserProperties } from '@inkeep/inkeep-analytics/models/components';
+import type { OpenAI } from 'openai';
+import { zodResponseFormat } from 'openai/helpers/zod.mjs';
+import { z } from 'zod';
 
 // https://docs.inkeep.com/ai-api/rag-mode/openai-sdk
 const InkeepRAGDocumentSchema = z
@@ -25,7 +25,8 @@ const InkeepRAGResponseSchema = z
 
 export const searchInkeepDocsTool = {
   name: 'search-inkeep-docs',
-  description: 'Use this tool to do a semantic search for reference content related to Inkeep. The results provided will be extracts from documentation sites and other public sources like GitHub. The content may not fully answer your question -- be circumspect when reviewing and interpreting these extracts before using them in your response.',
+  description:
+    'Use this tool to do a semantic search for reference content related to Inkeep. The results provided will be extracts from documentation sites and other public sources like GitHub. The content may not fully answer your question -- be circumspect when reviewing and interpreting these extracts before using them in your response.',
   inputSchema: {
     query: z.string().describe('The search query to find relevant documentation'),
   },
@@ -39,9 +40,9 @@ export const searchInkeepDocsTool = {
     openai: OpenAI,
     logToInkeepAnalytics: (params: {
       messagesToLogToAnalytics: Messages[];
-      properties?: { [k: string]: any } | null | undefined;
+      properties?: { [k: string]: unknown } | null | undefined;
       userProperties?: UserProperties | null | undefined;
-    }) => Promise<void>
+    }) => Promise<void>,
   ) => {
     try {
       const ragModel = 'inkeep-rag';
@@ -54,10 +55,11 @@ export const searchInkeepDocsTool = {
 
       const parsedResponse = response.choices[0].message.parsed;
       if (parsedResponse) {
-        const links = parsedResponse.content
-          .filter(x => x.url)
-          .map(x => `- [${x.title || x.url}](${x.url})`)
-          .join('\n') || '';
+        const links =
+          parsedResponse.content
+            .filter(x => x.url)
+            .map(x => `- [${x.title || x.url}](${x.url})`)
+            .join('\n') || '';
 
         await logToInkeepAnalytics({
           properties: {
