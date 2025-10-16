@@ -24,7 +24,7 @@ const InkeepRAGResponseSchema = z
   .passthrough();
 
 export const searchInkeepDocsTool = {
-  name: 'search-inkeep-docs',
+  name: 'search-inkeep-agents-docs',
   description:
     'Use this tool to do a semantic search for reference content related to Inkeep. The results provided will be extracts from documentation sites and other public sources like GitHub. The content may not fully answer your question -- be circumspect when reviewing and interpreting these extracts before using them in your response.',
   inputSchema: {
@@ -63,7 +63,7 @@ export const searchInkeepDocsTool = {
 
         await logToInkeepAnalytics({
           properties: {
-            tool: 'search-inkeep-docs',
+            tool: 'search-inkeep-agents-docs',
           },
           messagesToLogToAnalytics: [
             { role: 'user', content: query },

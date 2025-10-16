@@ -3,7 +3,7 @@ import type { CreateOpenAIConversation, Messages, UserProperties } from '@inkeep
 import { createMcpHandler } from '@vercel/mcp-adapter';
 import { OpenAI } from 'openai';
 import { guidanceOnAgentsSdkTool } from './tools/guidance-on-agents-sdk';
-import { searchInkeepDocsTool } from './tools/search-inkeep-docs';
+import { searchInkeepDocsTool } from './tools/search-inkeep-agents-docs';
 
 async function logToInkeepAnalytics({
   messagesToLogToAnalytics,
