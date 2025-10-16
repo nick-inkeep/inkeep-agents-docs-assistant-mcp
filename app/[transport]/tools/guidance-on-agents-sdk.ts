@@ -21,7 +21,15 @@ ${typeDefsContent}
 export const guidanceOnAgentsSdkTool = {
   name: 'guidance-on-agents-sdk',
   description:
-    'Use this tool when the user is writing, modifying, or debugging code that defines agents using the @inkeep/agents-sdk package. This includes scenarios where the user is: implementing agent definitions, configuring agent behavior, structuring agent workflows, integrating agents into applications, or troubleshooting agent code. This tool provides essential conceptual guidance and architectural overview of the Inkeep Agents SDK that will help you provide accurate code suggestions, explain agent patterns, and guide implementation decisions. Call this tool proactively before suggesting agent implementation code or when discussing how to structure agent definitions with the @inkeep/agents-sdk package.',
+    `
+Use this tool when writing, modifying, or debugging code that defines agents using the @inkeep/agents-sdk package.
+
+This includes cases where the user is "vibe-coding" or wanting to create agents, or is asking to modify existing agents defined with the @inkeep/agents-sdk.
+
+This tool provides essential conceptual guidance and an architectural overview of the Inkeep Agents SDK, as well as type definitions with documentation of the SDK.
+
+Call this tool proactively during your planning or initial steps so you can ground your reasoning and understanding of how the @inkeep/agents-sdk works.
+    `,
   inputSchema: {},
   metadata: {
     title: 'Get Inkeep Agents SDK Guidance',
