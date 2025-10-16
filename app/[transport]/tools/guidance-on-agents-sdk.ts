@@ -1,6 +1,5 @@
 import type { Messages, UserProperties } from '@inkeep/inkeep-analytics/models/components';
-
-const guidanceContent = ``;
+import { agentsSdkGuidanceContent } from './content/index';
 
 export const guidanceOnAgentsSdkTool = {
   name: 'guidance-on-agents-sdk',
@@ -34,7 +33,7 @@ export const guidanceOnAgentsSdkTool = {
       content: [
         {
           type: 'text' as const,
-          text: guidanceContent,
+          text: agentsSdkGuidanceContent,
         },
       ],
     };
