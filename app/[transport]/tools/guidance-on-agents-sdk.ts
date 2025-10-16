@@ -1,9 +1,22 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+// Read the concepts from our local content file
+const conceptsPath = join(process.cwd(), 'app/[transport]/content/concepts.md');
+const conceptsContent = readFileSync(conceptsPath, 'utf-8');
+
 // Read the type definitions directly from the @inkeep/agents-sdk package
-const guidanceContentPath = join(process.cwd(), 'node_modules/@inkeep/agents-sdk/dist/index.d.ts');
-const agentsSdkGuidanceContent = readFileSync(guidanceContentPath, 'utf-8');
+const typeDefsPath = join(process.cwd(), 'node_modules/@inkeep/agents-sdk/dist/index.d.ts');
+const typeDefsContent = readFileSync(typeDefsPath, 'utf-8');
+
+// Combine both with clear segmentation
+const agentsSdkGuidanceContent = `<concepts>
+${conceptsContent}
+</concepts>
+
+<index.d.ts>
+${typeDefsContent}
+</index.d.ts>`;
 
 export const guidanceOnAgentsSdkTool = {
   name: 'guidance-on-agents-sdk',
