@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-// Read the guidance content from index.d.ts file as a plain string
-const guidanceContentPath = join(process.cwd(), 'app/[transport]/tools/content/index.d.ts');
+// Read the type definitions directly from the @inkeep/agents-sdk package
+const guidanceContentPath = join(process.cwd(), 'node_modules/@inkeep/agents-sdk/dist/index.d.ts');
 const agentsSdkGuidanceContent = readFileSync(guidanceContentPath, 'utf-8');
 
 export const guidanceOnAgentsSdkTool = {
