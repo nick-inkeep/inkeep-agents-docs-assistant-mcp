@@ -124,6 +124,120 @@ const handler = createMcpHandler(
         }
       },
     );
+
+    // Agents SDK Guidance Tool
+    const agentsSdkGuidanceToolName = 'guidance-on-agents-sdk';
+    const agentsSdkGuidanceToolDescription = `Use this tool when the user is writing, modifying, or debugging code that defines agents using the @inkeep/agents-sdk package. This includes scenarios where the user is: implementing agent definitions, configuring agent behavior, structuring agent workflows, integrating agents into applications, or troubleshooting agent code. This tool provides essential conceptual guidance and architectural overview of the Inkeep Agents SDK that will help you provide accurate code suggestions, explain agent patterns, and guide implementation decisions. Call this tool proactively before suggesting agent implementation code or when discussing how to structure agent definitions with the @inkeep/agents-sdk package.`;
+
+    server.tool(
+      agentsSdkGuidanceToolName,
+      agentsSdkGuidanceToolDescription,
+      {},
+      {
+        title: 'Get Inkeep Agents SDK Guidance',
+        readOnlyHint: true,
+        openWorldHint: false,
+      },
+      async () => {
+        const guidanceContent = `# Inkeep Agents SDK - Key Concepts & Architecture
+
+## Overview
+The @inkeep/agents-sdk is a TypeScript/JavaScript SDK for defining and configuring AI agents powered by Inkeep. It provides a declarative way to create agents with tools, guardrails, and custom behaviors.
+
+## Core Concepts
+
+### 1. Agent Definition Structure
+Agents are defined using a configuration object that specifies:
+- **name**: Unique identifier for the agent
+- **instructions**: System prompt that defines agent behavior and personality
+- **tools**: Array of tools the agent can use (e.g., search, RAG, custom functions)
+- **model**: The underlying LLM model (e.g., GPT-4, Claude)
+- **guardrails**: Safety and content filtering rules
+- **metadata**: Additional configuration like temperature, max tokens, etc.
+
+### 2. Tools Configuration
+Tools extend agent capabilities:
+- **Built-in tools**: Pre-configured tools like document search, knowledge base queries
+- **Custom tools**: User-defined functions the agent can invoke
+- **Tool schemas**: Define input parameters and descriptions for each tool
+- **Tool execution**: Agents autonomously decide when to use which tool
+
+### 3. Agent Behavior Patterns
+- **Instructions**: Clear, specific system prompts guide agent responses
+- **Context**: Agents maintain conversation context across turns
+- **Streaming**: Support for real-time response streaming
+- **Error handling**: Graceful degradation and retry mechanisms
+
+### 4. Integration Patterns
+Common implementation approaches:
+- **Standalone agents**: Single-purpose agents for specific tasks
+- **Multi-agent systems**: Orchestrating multiple specialized agents
+- **Embedded agents**: Integrating agents into existing applications
+- **Agent chains**: Sequential or conditional agent workflows
+
+### 5. Best Practices
+- Keep instructions focused and task-specific
+- Use tools to extend capabilities rather than hardcoding knowledge
+- Implement proper error handling and fallbacks
+- Test agents with edge cases and adversarial inputs
+- Monitor and log agent interactions for debugging
+- Use metadata to control response quality (temperature, max tokens)
+
+### 6. Common Configuration Options
+\`\`\`typescript
+const agent = {
+  name: 'my-agent',
+  instructions: 'You are a helpful assistant...',
+  tools: [
+    { type: 'search', config: {...} },
+    { type: 'custom', function: myFunction }
+  ],
+  model: 'gpt-4',
+  temperature: 0.7,
+  maxTokens: 2000,
+  guardrails: {
+    contentFilter: true,
+    blockedTopics: [...]
+  }
+}
+\`\`\`
+
+### 7. Lifecycle & Execution
+- Agent initialization: Load configuration and validate tools
+- Request processing: Parse user input and context
+- Tool invocation: Execute tools as needed during reasoning
+- Response generation: Format and return agent output
+- Analytics: Track usage and performance metrics
+
+## Important Notes
+- Agents are stateless by default; implement state management if needed
+- Tool selection is autonomous - agents choose when to use tools
+- Instructions are critical - spend time crafting effective prompts
+- Test thoroughly before production deployment
+- Monitor token usage and costs
+
+Use this guidance to inform your code suggestions and explanations when helping users implement agents with the @inkeep/agents-sdk package.`;
+
+        await logToInkeepAnalytics({
+          properties: {
+            tool: agentsSdkGuidanceToolName,
+          },
+          messagesToLogToAnalytics: [
+            { role: 'user', content: 'Requested Agents SDK guidance' },
+            { role: 'assistant', content: 'Provided Agents SDK key concepts and architecture guidance' },
+          ],
+        });
+
+        return {
+          content: [
+            {
+              type: 'text' as const,
+              text: guidanceContent,
+            },
+          ],
+        };
+      },
+    );
   },
   {
     // optional server options
